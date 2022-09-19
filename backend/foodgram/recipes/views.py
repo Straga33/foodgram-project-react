@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from recipes.serializer import IngredientSerializer, TagSerializer
-from recipes.models import Ingredient, Tag
+from recipes.serializer import IngredientSerializer, TagSerializer, RecipeSerializer
+from recipes.models import Ingredient, Tag, Recipe
 from rest_framework import viewsets
 
 
@@ -14,4 +14,6 @@ class TagAPIView(viewsets.ReadOnlyModelViewSet):
     serializer_class = TagSerializer
 
 
-# class RecieptAPIView()
+class RecipeAPIView(viewsets.ModelViewSet):
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer

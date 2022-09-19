@@ -5,7 +5,7 @@ from users.models import User
 
 
 class Ingredient(models.Model):
-    """Модель ингритиета"""
+    """Модель ингритиета."""
     name = models.CharField(
         unique=True,
         max_length=200,
@@ -16,7 +16,7 @@ class Ingredient(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Ингредиенты'
+        verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
 
     def __str__(self):
@@ -24,13 +24,13 @@ class Ingredient(models.Model):
 
 
 class Tag(models.Model):
-    """Модель тега"""
+    """Модель тега."""
     name = models.CharField(max_length=200,)
     color = ColorField(max_length=7,)
     slug = models.SlugField(max_length=150,)
 
     class Meta:
-        verbose_name = 'Теги'
+        verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
 
     def __str__(self):
@@ -38,7 +38,7 @@ class Tag(models.Model):
 
 
 class Recipe(models.Model):
-    """Модель Reciept"""
+    """Модель рецепта."""
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -78,12 +78,36 @@ class Recipe(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Рецепты'
+        verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
 
     def __str__(self):
         return self.name[:15]
 
 
+class AmountIngredientsInRecipe(models.Model):
+    """Модель количества ингредиентов в рецепте."""
+    amount_ingredients = models.ForeignKey(
+        Ingredient,
+        on_delete=models.CASCADE,
+        related_name='amount_ingredients',
+        verbose_name='Ингредиент',
+        help_text='Укажите ингредиент'
+    )
+    amount_recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name='amount_recipe',
+        verbose_name='Рецепт',
+        help_text='Укажите рецепт'
+    )
+    amount = models.PositiveSmallIntegerField(
+        verbose_name='Количество ингредиента',
+        help_text='Укажите количество ингредиента'
+    )
+    class Meta:
+        verbose_name = 'Количество ингредиента'
+        verbose_name_plural = 'Количество ингредиентов'
 
-
+    def __str__(self):
+        return f'{self.amount_ingredients} {self.amount}'
