@@ -1,5 +1,6 @@
 from django.core.validators import MinValueValidator
 from django.db import models
+
 from users.models import User
 
 
@@ -29,18 +30,18 @@ class Tag(models.Model):
     """Модель тега."""
     name = models.CharField(
         max_length=200,
-        verbose_name = 'Название тега',
-        help_text = 'Укажите название тега',
+        verbose_name='Название тега',
+        help_text='Укажите название тега',
     )
     color = models.CharField(
         max_length=7,
-        verbose_name = 'Цвет тега',
-        help_text = 'Укажите цвет тега',
+        verbose_name='Цвет тега',
+        help_text='Укажите цвет тега',
     )
     slug = models.SlugField(
         max_length=200,
-        verbose_name = 'Слаг тега',
-        help_text = 'Укажите слаг тега',
+        verbose_name='Слаг тега',
+        help_text='Укажите слаг тега',
     )
 
     class Meta:
@@ -85,9 +86,9 @@ class Recipe(models.Model):
         Tag,
         related_name='recipes',
         verbose_name='Теги рецепта',
-        help_text='Укажите теги рецепта'
+        help_text='Укажите теги рецепта',
     )
-    cooking_time  = models.PositiveSmallIntegerField(
+    cooking_time = models.PositiveSmallIntegerField(
         validators=(
             MinValueValidator(
                 1, message='Минимальное время приготовления 1 минута'
@@ -130,10 +131,11 @@ class AmountIngredientsInRecipe(models.Model):
         verbose_name='Количество ингредиента',
         help_text='Укажите количество ингредиента'
     )
+
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['recipe', 'ingredient'],
+                fields=['recipe', 'ingredient', ],
                 name='unique_ingredient',
             )
         ]
@@ -163,7 +165,7 @@ class FavoritedRecipe(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['user', 'recipe'],
+                fields=['user', 'recipe', ],
                 name='unique_favorited',
             )
         ]
@@ -192,7 +194,7 @@ class ShoppingCart(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['user', 'recipe'],
+                fields=['user', 'recipe', ],
                 name='unique_recipe_in_shopping_cart',
             )
         ]

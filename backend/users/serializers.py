@@ -20,11 +20,11 @@ class ListUserSerializer(serializers.ModelSerializer):
         )
 
     def get_is_subscribed(self, obj):
-            request = self.context.get('request')
-            if request is None or request.user.is_anonymous:
-                return False
-            user = request.user
-            return Follow.objects.filter(user=user, author=obj).exists()
+        request = self.context.get('request')
+        if request is None or request.user.is_anonymous:
+            return False
+        user = request.user
+        return Follow.objects.filter(user=user, author=obj).exists()
 
 
 class FavoriteOrShoppingRecipeSerializer(serializers.ModelSerializer):

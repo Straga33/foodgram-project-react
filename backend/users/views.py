@@ -14,12 +14,12 @@ class UsersViewSet(UserViewSet):
     """Получение списка пользователей / обработка фоловеров."""
     queryset = User.objects.all()
     serializer_class = ListUserSerializer
-    permission_classes = [IsAuthenticated,]
+    permission_classes = [IsAuthenticated, ]
 
     @action(
         methods=['GET'],
         detail=False,
-        permission_classes=[IsAuthenticated,]
+        permission_classes=[IsAuthenticated, ]
     )
     def subscriptions(self, request):
         user = self.request.user
@@ -65,3 +65,7 @@ class UsersViewSet(UserViewSet):
                     {'errors': 'Автор отсутсвует в списке подписок'},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
+        return Response(
+            {'errors': 'Вы применяете недопустимую операцию'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )

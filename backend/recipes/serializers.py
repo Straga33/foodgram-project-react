@@ -6,21 +6,21 @@ from recipes.models import AmountIngredientsInRecipe, Ingredient, Recipe, Tag
 
 
 class IngredientSerializer(serializers.ModelSerializer):
-    """Сериализация игнредиентов."""    
+    """Сериализация игнредиентов."""
     class Meta:
         model = Ingredient
         fields = ('id', 'name', 'measurement_unit',)
 
 
 class TagSerializer(serializers.ModelSerializer):
-    """Сериализация тегов."""    
+    """Сериализация тегов."""
     class Meta:
         model = Tag
         fields = ('id', 'name', 'color', 'slug',)
 
 
 class AmountIngredientSerializer(serializers.ModelSerializer):
-    """Сериализация количества ингредиентов в рецепте.""" 
+    """Сериализация количества ингредиентов в рецепте."""
     id = serializers.ReadOnlyField(source='ingredient.id')
     name = serializers.ReadOnlyField(source='ingredient.name')
     measurement_unit = serializers.ReadOnlyField(

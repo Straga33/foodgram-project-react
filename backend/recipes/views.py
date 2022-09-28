@@ -22,7 +22,7 @@ class IngredientViewSet(viewsets.ModelViewSet):
     serializer_class = IngredientSerializer
     pagination_class = None
     filter_class = IngredientFilter
-    permission_classes = [IsAdminOrReadOnly,]
+    permission_classes = [IsAdminOrReadOnly, ]
 
 
 class TagViewSet(viewsets.ModelViewSet):
@@ -30,7 +30,7 @@ class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     pagination_class = None
-    permission_classes = [IsAdminOrReadOnly,]
+    permission_classes = [IsAdminOrReadOnly, ]
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -39,7 +39,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     добавление / удаление в список покупок /
     формирования и вывод списка покупок в текстовом файле."""
     queryset = Recipe.objects.all()
-    permission_classes = [IsOwnerOrReadOnly,]
+    permission_classes = [IsOwnerOrReadOnly, ]
     filter_class = RecipeFilter
 
     def get_serializer_class(self):
@@ -76,7 +76,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     @action(
         methods=['POST', 'DELETE'],
         detail=True,
-        permission_classes=[IsAuthenticated,],
+        permission_classes=[IsAuthenticated, ],
     )
     def favorite(self, request, pk):
         recipe_pk = self.kwargs.get('pk')
@@ -106,6 +106,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
                     {'errors': 'Рецепта нет в списке избранных'},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
+        return Response(
+            {'errors': 'Недопустимая операция'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
     @action(
         methods=['POST', 'DELETE'],
@@ -137,11 +141,15 @@ class RecipeViewSet(viewsets.ModelViewSet):
                     {'errors': 'Рецепта нет в списке покупок'},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
+        return Response(
+            {'errors': 'Недопустимая операция'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
     @action(
         methods=['GET'],
         detail=False,
-        permission_classes=[IsAuthenticated,]
+        permission_classes=[IsAuthenticated, ]
     )
     def download_shopping_cart(self, request):
         ingredients = AmountIngredientsInRecipe.objects.select_related(

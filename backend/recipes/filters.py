@@ -18,7 +18,6 @@ class RecipeFilter(FilterSet):
         field_name='tags__slug'
     )
 
-
     def get_favorited(self, queryset, name, data):
         if data and not self.request.user.is_anonymous:
             return queryset.filter(favorite_recipe__user=self.request.user)
@@ -49,4 +48,4 @@ class IngredientFilter(FilterSet):
 
     class Meta:
         model = Ingredient
-        fields = ['name',]
+        fields = ['name', ]
