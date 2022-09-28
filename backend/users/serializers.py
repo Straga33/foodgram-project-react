@@ -24,7 +24,7 @@ class ListUserSerializer(serializers.ModelSerializer):
             if request is None or request.user.is_anonymous:
                 return False
             user = request.user
-            return Follow.objects.filter(user=user, author=obj).exists()   
+            return Follow.objects.filter(user=user, author=obj).exists()
 
 
 class FavoriteOrShoppingRecipeSerializer(serializers.ModelSerializer):
@@ -64,12 +64,14 @@ class FollowSerializer(serializers.ModelSerializer):
         )
 
     def get_is_subscribed(self, obj):
-        return Follow.objects.filter(user=obj.user, author=obj.author).exists()
+        return Follow.objects.filter(
+            user=obj.user, author=obj.author
+        ).exists()
 
     def get_recipes(self, obj):
-        queryset = Recipe.objects.filter(author=obj.author).order_by(
-            '-pub_date'
-        )
+        queryset = Recipe.objects.filter(
+            author=obj.author
+        ).order_by('-pub_date')
         return FavoriteOrShoppingRecipeSerializer(queryset, many=True).data
 
     def get_recipes_count(self, obj):

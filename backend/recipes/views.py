@@ -2,12 +2,12 @@ from django.db.models import Sum
 from django.db.models.expressions import Exists, OuterRef
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
 
+from recipes.filters import IngredientFilter, RecipeFilter
 from recipes.models import (AmountIngredientsInRecipe, FavoritedRecipe,
                             Ingredient, Recipe, ShoppingCart, Tag)
 from recipes.permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
@@ -21,8 +21,7 @@ class IngredientViewSet(viewsets.ModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     pagination_class = None
-    filter_backends = [DjangoFilterBackend,]
-    filterset_fields = ['name']
+    filter_class = IngredientFilter
     permission_classes = [IsAdminOrReadOnly,]
 
 
@@ -35,11 +34,13 @@ class TagViewSet(viewsets.ModelViewSet):
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
-    """Вьюсет для модели рецептов. 
+    """Вьюсет для модели рецептов.
     Добавление / удаление из избранных.
-    добавление / удаление в список покупок."""
+    добавление / удаление в список покупок /
+    формирования и вывод списка покупок в текстовом файле."""
     queryset = Recipe.objects.all()
     permission_classes = [IsOwnerOrReadOnly,]
+    filter_class = RecipeFilter
 
     def get_serializer_class(self):
         if self.request.method in SAFE_METHODS:
@@ -138,7 +139,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 )
 
     @action(
-        methods=['GET'], detail=False, permission_classes=[IsAuthenticated,]
+        methods=['GET'],
+        detail=False,
+        permission_classes=[IsAuthenticated,]
     )
     def download_shopping_cart(self, request):
         ingredients = AmountIngredientsInRecipe.objects.select_related(

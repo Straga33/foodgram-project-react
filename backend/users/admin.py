@@ -4,6 +4,7 @@ from users.models import Follow, User
 
 
 class UserAdmin(admin.ModelAdmin):
+    """Админка для пользователей."""
     list_display = (
         'id',
         'username',
@@ -16,6 +17,7 @@ class UserAdmin(admin.ModelAdmin):
 
 
 class FollowAdmin(admin.ModelAdmin):
+    """Админка для подписок."""
     list_display = ('user', 'author',)
     search_fields = ('user', 'author',)
     list_filter = ('author',)

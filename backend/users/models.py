@@ -9,7 +9,7 @@ class User(AbstractUser):
     """Модель пользователей."""
     username = models.CharField(
         unique=True,
-        max_length=150,        
+        max_length=150,
         validators=(
             validate_username,
             RegexValidator(

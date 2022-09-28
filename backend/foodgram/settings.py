@@ -30,10 +30,11 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djoser',
     'django_filters',
-    #'colorfield',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -41,6 +42,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
 ]
 
 ROOT_URLCONF = 'foodgram.urls'
@@ -137,7 +142,6 @@ DJOSER = {
     'SERIALIZERS': {
         'user': 'users.serializers.ListUserSerializer',
         'current_user': 'users.serializers.ListUserSerializer',
-        #'user_create': 'users.serializers.ListUserSerializer',
     },
     "PERMISSIONS": {
         'user': ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],

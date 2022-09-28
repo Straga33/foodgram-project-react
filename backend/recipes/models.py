@@ -35,7 +35,7 @@ class Tag(models.Model):
     color = models.CharField(
         max_length=7,
         verbose_name = 'Цвет тега',
-        help_text = 'Укажите цвет тега',        
+        help_text = 'Укажите цвет тега',
     )
     slug = models.SlugField(
         max_length=200,
@@ -66,7 +66,7 @@ class Recipe(models.Model):
         help_text='Укажите название рецепта'
     )
     image = models.ImageField(
-        upload_to='reciepes_images/',
+        upload_to='recipes_images/',
         verbose_name='Картинка рецепта',
     )
     text = models.TextField(
@@ -96,7 +96,7 @@ class Recipe(models.Model):
         verbose_name='Время приготовления',
         help_text='Укажите время приготовления'
     )
-    pub_date = models.DateTimeField(        
+    pub_date = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Дата публикации',
     )
@@ -157,7 +157,7 @@ class FavoritedRecipe(models.Model):
         Recipe,
         on_delete=models.CASCADE,
         related_name='favorite_recipe',
-        verbose_name='Рецепт',
+        verbose_name='Избранный рецепт',
     )
 
     class Meta:
@@ -197,7 +197,7 @@ class ShoppingCart(models.Model):
             )
         ]
         verbose_name = 'Список покупок'
-        verbose_name_plural = 'Списки покупок'        
+        verbose_name_plural = 'Списки покупок'
 
     def __str__(self):
         return f'{self.user} добавил {self.recipe}'
