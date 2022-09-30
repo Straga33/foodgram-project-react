@@ -1,6 +1,5 @@
 # Проект Foodgram продуктовый помощник.
-![example workflow](https://github.com/Straga33/ foodgram-project-react
-/actions/workflows/foodgram_workflows.yml/badge.svg)
+![example workflow](https://github.com/Straga33/foodgram-project-react/actions/workflows/foodgram_workflows.yml/badge.svg)
 
 Проект Foodgram сайт, на котором пользователи могут публиковать рецепты, добавлять чужие рецепты в избранное и подписываться на публикации других авторов. Сервис «Список покупок» позволяет пользователям создавать список продуктов, которые нужно купить для приготовления выбранных блюд.
 
@@ -46,7 +45,7 @@ DB_PORT=5432 # порт для подключения к БД
 ```
 mkdir infra
 ```
-- Перенести файлы docker-compose.yml и default.conf на сервер.
+Перенести файлы docker-compose.yml и default.conf на сервер.
 
 ```
 scp docker-compose.yml username@server_ip:/home/<username>/infra
@@ -54,9 +53,7 @@ scp docker-compose.yml username@server_ip:/home/<username>/infra
 ```
 scp default.conf <username>@<server_ip>:/home/<username>/infra
 ```
-- Создайте файл .env в дериктории infra по шаблону.
-
-```
+Создайте файл .env в дериктории infra по шаблону.
 
 Выполнить миграции:
 ```
@@ -65,12 +62,10 @@ sudo docker-compose exec backend python manage.py makemigrations
 ```
 docker-compose exec web python manage.py migrate
 ```
-
 Собрать статистику:
 ```
 sudo docker-compose exec backend python manage.py collectstatic --no-input
 ```
-
 Создать суперпользователя:
 ```
 docker-compose exec web python manage.py createsuperuser
