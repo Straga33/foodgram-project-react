@@ -37,11 +37,11 @@ class User(AbstractUser):
         help_text='Укажите email пользователя'
     )
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = [
+    REQUIRED_FIELDS = (
         'username',
         'first_name',
         'last_name',
-    ]
+    )
 
     class Meta:
         verbose_name = 'Пользователь'
@@ -71,7 +71,7 @@ class Follow(models.Model):
         verbose_name_plural = 'Подписки'
         constraints = [
             models.UniqueConstraint(
-                fields=['user', 'author'],
+                fields=('user', 'author'),
                 name='unique_subscription',
             )
         ]

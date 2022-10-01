@@ -1,5 +1,6 @@
 from django.core.validators import MinValueValidator
 from django.db import models
+from foodgram.settings import MINAMOUNT, MINCOOKINGTIME
 
 from users.models import User
 
@@ -57,7 +58,7 @@ class Recipe(models.Model):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='recipe',
+        related_name='author_recipe',
         verbose_name='Автор рецепта',
         help_text='Укажите автора рецепта'
     )
@@ -91,7 +92,7 @@ class Recipe(models.Model):
     cooking_time = models.PositiveSmallIntegerField(
         validators=(
             MinValueValidator(
-                1, message='Минимальное время приготовления 1 минута'
+                MINCOOKINGTIME, message='Минимальное время приготовления 1 минута'
             ),
         ),
         verbose_name='Время приготовления',
@@ -128,6 +129,11 @@ class AmountIngredientsInRecipe(models.Model):
         help_text='Укажите рецепт'
     )
     amount = models.PositiveSmallIntegerField(
+        validators=(
+            MinValueValidator(
+                MINAMOUNT, message='Минимум 1 единица ингредиента'
+            ),
+        ),
         verbose_name='Количество ингредиента',
         help_text='Укажите количество ингредиента'
     )
@@ -135,7 +141,7 @@ class AmountIngredientsInRecipe(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['recipe', 'ingredient', ],
+                fields=('recipe', 'ingredient',),
                 name='unique_ingredient',
             )
         ]
@@ -147,7 +153,7 @@ class AmountIngredientsInRecipe(models.Model):
 
 
 class FavoritedRecipe(models.Model):
-    """Модель для выбора любимого рецепта."""
+    """Модель избранных рецептов."""
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -165,7 +171,7 @@ class FavoritedRecipe(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['user', 'recipe', ],
+                fields=('user', 'recipe',),
                 name='unique_favorited',
             )
         ]
@@ -177,7 +183,7 @@ class FavoritedRecipe(models.Model):
 
 
 class ShoppingCart(models.Model):
-    """Модель листа покупок."""
+    """Модель листа покупок (корзина)."""
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -194,7 +200,7 @@ class ShoppingCart(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['user', 'recipe', ],
+                fields=('user', 'recipe',),
                 name='unique_recipe_in_shopping_cart',
             )
         ]
