@@ -176,5 +176,5 @@ class RecipeViewSet(viewsets.ModelViewSet):
             )
             response[
                 'Content-Disposition'
-            ] = 'attachment; filename=FILENAME'
+            ] = f'attachment; filename={FILENAME}'
         return response
