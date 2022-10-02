@@ -58,7 +58,7 @@ class Recipe(models.Model):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='author_recipe',
+        related_name='recipe',
         verbose_name='Автор рецепта',
         help_text='Укажите автора рецепта'
     )
@@ -85,7 +85,7 @@ class Recipe(models.Model):
     )
     tags = models.ManyToManyField(
         Tag,
-        related_name='recipes',
+        related_name='recipe',
         verbose_name='Теги рецепта',
         help_text='Укажите теги рецепта',
     )
@@ -142,7 +142,7 @@ class AmountIngredientsInRecipe(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=('recipe', 'ingredient',),
+                fields=('recipe', 'ingredient'),
                 name='unique_ingredient',
             )
         ]
@@ -154,7 +154,7 @@ class AmountIngredientsInRecipe(models.Model):
 
 
 class FavoritedRecipe(models.Model):
-    """Модель избранных рецептов."""
+    """Модель для выбора любимого рецепта."""
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -172,19 +172,19 @@ class FavoritedRecipe(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=('user', 'recipe',),
+                fields=('user', 'recipe'),
                 name='unique_favorited',
             )
         ]
-        verbose_name = 'Количество ингредиента'
-        verbose_name_plural = 'Количество ингредиентов'
+        verbose_name = 'Избранный рецепт'
+        verbose_name_plural = 'Избранные рецепты'
 
     def __str__(self):
         return f'{self.user} любит {self.recipe}'
 
 
 class ShoppingCart(models.Model):
-    """Модель листа покупок (корзина)."""
+    """Модель листа покупок."""
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -201,7 +201,7 @@ class ShoppingCart(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=('user', 'recipe',),
+                fields=('user', 'recipe'),
                 name='unique_recipe_in_shopping_cart',
             )
         ]

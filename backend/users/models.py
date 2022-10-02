@@ -2,8 +2,6 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 
-from users.validators import validate_username
-
 
 class User(AbstractUser):
     """Модель пользователей."""
@@ -11,7 +9,6 @@ class User(AbstractUser):
         unique=True,
         max_length=150,
         validators=(
-            validate_username,
             RegexValidator(
                 regex=r'^[\w.@+-]+\Z',
                 message='Не корректное имя пользователя'

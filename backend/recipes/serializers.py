@@ -1,9 +1,12 @@
+from django.db import transaction
 from drf_extra_fields.fields import Base64ImageField
+from foodgram.settings import MINAMOUNT, MINCOOKINGTIME
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 from users.serializers import ListUserSerializer
 
-from recipes.models import AmountIngredientsInRecipe, Ingredient, Recipe, Tag
+from recipes.models import (AmountIngredientsInRecipe, FavoritedRecipe,
+                            Ingredient, Recipe, ShoppingCart, Tag)
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -36,10 +39,11 @@ class AmountIngredientSerializer(serializers.ModelSerializer):
             'measurement_unit',
             'amount',
         )
+
         validators = [
             UniqueTogetherValidator(
                 queryset=AmountIngredientsInRecipe.objects.all(),
-                fields=('recipe', 'ingredient')
+                fields=('recipe', 'ingredient',)
             )
         ]
 
@@ -55,12 +59,6 @@ class AddAmountIngredientSerializer(serializers.ModelSerializer):
             'id',
             'amount',
         )
-        validators = [
-            UniqueTogetherValidator(
-                queryset=AmountIngredientsInRecipe.objects.all(),
-                fields=('recipe', 'ingredient')
-            )
-        ]
 
 
 class RecipesListSerializer(serializers.ModelSerializer):
@@ -106,6 +104,16 @@ class RecipesCreateSerializer(serializers.ModelSerializer):
         read_only_fields = ('author',)
 
     def validate(self, data):
+        cooking_time = self.initial_data['cooking_time']
+        amount = data['ingredients'][0]['amount']
+        if cooking_time < MINCOOKINGTIME:
+            raise serializers.ValidationError({
+                    'cooking_time': f'Минимум {MINCOOKINGTIME} минут(а).'
+                })
+        if amount < MINAMOUNT:
+            raise serializers.ValidationError({
+                   'amount': f'Минимум {MINAMOUNT} единиц(а) ингредиента.'
+                })
         ingredients = data['ingredients']
         unique_set = set()
         for ingredient_data in ingredients:
@@ -125,6 +133,7 @@ class RecipesCreateSerializer(serializers.ModelSerializer):
                 amount=ingredient.get('amount'),
             )
 
+    @transaction.atomic
     def create(self, validated_data):
         ingredients = validated_data.pop('ingredients')
         tags = validated_data.pop('tags')
@@ -133,6 +142,7 @@ class RecipesCreateSerializer(serializers.ModelSerializer):
         self.create_amount_ingredients(ingredients, recipe)
         return recipe
 
+    @transaction.atomic
     def update(self, obj, validated_data):
         if 'ingredients' in validated_data:
             ingredients = validated_data.pop('ingredients')
@@ -148,8 +158,8 @@ class RecipesCreateSerializer(serializers.ModelSerializer):
         return serializer.data
 
 
-class FavoriteOrShoppingRecipeSerializer(serializers.ModelSerializer):
-    """Сериализация при добавлении в список покупок или избранных."""
+class FavoriteRecipeSerializer(serializers.ModelSerializer):
+    """Сериализация при добавлении в список избранных."""
     class Meta:
         model = Recipe
         fields = (
@@ -158,3 +168,29 @@ class FavoriteOrShoppingRecipeSerializer(serializers.ModelSerializer):
             'image',
             'cooking_time',
         )
+
+        validators = [
+            UniqueTogetherValidator(
+                queryset=FavoritedRecipe.objects.all(),
+                fields=('user', 'recipe')
+            )
+        ]
+
+
+class ShoppingRecipeSerializer(serializers.ModelSerializer):
+    """Сериализация при добавлении в список покупок ."""
+    class Meta:
+        model = Recipe
+        fields = (
+            'id',
+            'name',
+            'image',
+            'cooking_time',
+        )
+
+        validators = [
+            UniqueTogetherValidator(
+                queryset=ShoppingCart.objects.all(),
+                fields=('user', 'recipe')
+            )
+        ]

@@ -1,5 +1,6 @@
 from recipes.models import Recipe
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
 
 from users.models import Follow, User
 
@@ -27,8 +28,8 @@ class ListUserSerializer(serializers.ModelSerializer):
         return Follow.objects.filter(user=user, author=obj).exists()
 
 
-class FavoriteOrShoppingRecipeSerializer(serializers.ModelSerializer):
-    """Серилизация рецепта в избранные или покупки."""
+class GetRecipesFollowSerializer(serializers.ModelSerializer):
+    """Серилизация рецептов при подписке на автора."""
     class Meta:
         model = Recipe
         fields = (
@@ -63,16 +64,21 @@ class FollowSerializer(serializers.ModelSerializer):
             'recipes_count',
         )
 
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Follow.objects.all(),
+                fields=('user', 'author')
+            )
+        ]
+
     def get_is_subscribed(self, obj):
         return Follow.objects.filter(
             user=obj.user, author=obj.author
         ).exists()
 
     def get_recipes(self, obj):
-        queryset = Recipe.objects.filter(
-            author=obj.author
-        ).order_by('-pub_date')
-        return FavoriteOrShoppingRecipeSerializer(queryset, many=True).data
+        queryset = obj.author.recipe.all()
+        return GetRecipesFollowSerializer(queryset, many=True).data
 
     def get_recipes_count(self, obj):
-        return Recipe.objects.filter(author=obj.author).count()
+        return obj.author.recipe.count()

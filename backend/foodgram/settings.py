@@ -7,9 +7,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MINCOOKINGTIME = 1
 # Минимальное количество единиц ингредиентов
 MINAMOUNT = 1
+# Параметры файла списка покупок
 FILENAME = 'shopping_list.txt'
 CONTENTTYPE = 'text/plain; charset=utf8'
 
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '*27he3pvceh2&xtloux#p+_xx#!9qfe1tz(dqgyz4q@jo%nvuc'

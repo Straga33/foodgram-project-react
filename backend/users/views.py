@@ -51,14 +51,12 @@ class UsersViewSet(UserViewSet):
                     status=status.HTTP_201_CREATED
                 )
         elif request.method == 'DELETE':
-            if Follow.objects.filter(
+            follow_bm = Follow.objects.filter(
                 user=request.user,
-                author=author
-            ).exists():
-                Follow.objects.filter(
-                    user=request.user,
-                    author=author
-                ).delete()
+                author=author,
+            )
+            if follow_bm.exists():
+                follow_bm.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)
             else:
                 return Response(

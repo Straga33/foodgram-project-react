@@ -27,16 +27,18 @@ class TagAdmin(admin.ModelAdmin):
 
 class RecipeAdmin(admin.ModelAdmin):
     """Админка для рецептов."""
+    list_display = (
+        'id',
+        'name',
+        'author',
+        'amount_in_favorites',
+    )
     list_filter = (
         'name',
         'author',
         'tags',
     )
-    list_display = (
-        'name',
-        'author',
-        'amount_in_favorites',
-    )
+
 
     def amount_in_favorites(self, obj):
         return obj.favorite_recipe.count()
@@ -50,7 +52,6 @@ class AmountIngredientsInRecipeAdmin(admin.ModelAdmin):
         'recipe',
         'amount',
     )
-    list_filter = ('ingredient',)
 
 
 class FavoritedRecipeAdmin(admin.ModelAdmin):

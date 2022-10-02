@@ -12,9 +12,10 @@ from recipes.filters import IngredientFilter, RecipeFilter
 from recipes.models import (AmountIngredientsInRecipe, FavoritedRecipe,
                             Ingredient, Recipe, ShoppingCart, Tag)
 from recipes.permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
-from recipes.serializers import (FavoriteOrShoppingRecipeSerializer,
+from recipes.serializers import (FavoriteRecipeSerializer,
                                  IngredientSerializer, RecipesCreateSerializer,
-                                 RecipesListSerializer, TagSerializer)
+                                 RecipesListSerializer,
+                                 ShoppingRecipeSerializer, TagSerializer)
 
 
 class IngredientViewSet(viewsets.ModelViewSet):
@@ -83,7 +84,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         recipe_pk = self.kwargs.get('pk')
         recipe = get_object_or_404(Recipe, pk=recipe_pk)
         if request.method == 'POST':
-            serializer = FavoriteOrShoppingRecipeSerializer(recipe)
+            serializer = FavoriteRecipeSerializer(recipe)
             FavoritedRecipe.objects.create(
                 user=self.request.user,
                 recipe=recipe
@@ -118,7 +119,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         recipe_pk = self.kwargs.get('pk')
         recipe = get_object_or_404(Recipe, pk=recipe_pk)
         if request.method == 'POST':
-            serializer = FavoriteOrShoppingRecipeSerializer(recipe)
+            serializer = ShoppingRecipeSerializer(recipe)
             ShoppingCart.objects.create(
                 user=self.request.user,
                 recipe=recipe
@@ -176,5 +177,5 @@ class RecipeViewSet(viewsets.ModelViewSet):
             )
             response[
                 'Content-Disposition'
-            ] = f'attachment; filename={FILENAME}'
+            ] = 'attachment; filename={FILENAME}'
         return response
