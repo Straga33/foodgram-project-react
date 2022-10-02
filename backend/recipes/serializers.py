@@ -108,12 +108,12 @@ class RecipesCreateSerializer(serializers.ModelSerializer):
         amount = data['ingredients'][0]['amount']
         if cooking_time < MINCOOKINGTIME:
             raise serializers.ValidationError({
-                    'cooking_time': f'Минимум {MINCOOKINGTIME} минут(а).'
-                })
+                'cooking_time': f'Минимум {MINCOOKINGTIME} минут(а).'
+            })
         if amount < MINAMOUNT:
             raise serializers.ValidationError({
-                   'amount': f'Минимум {MINAMOUNT} единиц(а) ингредиента.'
-                })
+                'amount': f'Минимум {MINAMOUNT} единиц(а) ингредиента.'
+            })
         ingredients = data['ingredients']
         unique_set = set()
         for ingredient_data in ingredients:
