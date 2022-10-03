@@ -17,7 +17,7 @@ class UsersViewSet(UserViewSet):
     permission_classes = (IsAuthenticated,)
 
     @action(
-        methods=['GET'],
+        methods=('GET',),
         detail=False,
         permission_classes=(IsAuthenticated,)
     )
@@ -31,7 +31,7 @@ class UsersViewSet(UserViewSet):
         return self.get_paginated_response(serializer.data)
 
     @action(
-        methods=['POST', 'DELETE'],
+        methods=('POST', 'DELETE',),
         detail=True,
     )
     def subscribe(self, request, id):

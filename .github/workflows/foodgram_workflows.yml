@@ -58,7 +58,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          file: ./backend/Dockerfile
+          context: ./backend
           tags: straga33/foodgram_backend:latest
       - name: Push to Docker Hub Frontend
         # Пуш образа в Docker Hub
@@ -68,18 +68,6 @@ jobs:
           context: ./frontend
           tags: straga33/foodgram_frontend:latest
 
-# - name: Push to Docker Hub
-#             uses: docker/build-push-action@v2
-#             with:
-#               context: backend/
-#               push: true
-#               tags: straga33/foodgram_backend:latest
-#           - name: Push frontend
-#             uses: docker/build-push-action@v2
-#             with:
-#               context: frontend/
-#               push: true
-#               tags: straga33/foodgram_frontend:latest
 
 #   deploy:
 #       runs-on: ubuntu-latest

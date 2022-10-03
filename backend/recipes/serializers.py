@@ -40,12 +40,12 @@ class AmountIngredientSerializer(serializers.ModelSerializer):
             'amount',
         )
 
-        validators = [
+        validators = (
             UniqueTogetherValidator(
                 queryset=AmountIngredientsInRecipe.objects.all(),
                 fields=('recipe', 'ingredient',)
-            )
-        ]
+            ),
+        )
 
 
 class AddAmountIngredientSerializer(serializers.ModelSerializer):
@@ -104,7 +104,7 @@ class RecipesCreateSerializer(serializers.ModelSerializer):
         read_only_fields = ('author',)
 
     def validate(self, data):
-        cooking_time = self.initial_data['cooking_time']
+        cooking_time = int(self.initial_data['cooking_time'])
         amount = data['ingredients'][0]['amount']
         if cooking_time < MINCOOKINGTIME:
             raise serializers.ValidationError({
@@ -169,12 +169,12 @@ class FavoriteRecipeSerializer(serializers.ModelSerializer):
             'cooking_time',
         )
 
-        validators = [
+        validators = (
             UniqueTogetherValidator(
                 queryset=FavoritedRecipe.objects.all(),
                 fields=('user', 'recipe')
-            )
-        ]
+            ),
+        )
 
 
 class ShoppingRecipeSerializer(serializers.ModelSerializer):
@@ -188,9 +188,9 @@ class ShoppingRecipeSerializer(serializers.ModelSerializer):
             'cooking_time',
         )
 
-        validators = [
+        validators = (
             UniqueTogetherValidator(
                 queryset=ShoppingCart.objects.all(),
                 fields=('user', 'recipe')
-            )
-        ]
+            ),
+        )

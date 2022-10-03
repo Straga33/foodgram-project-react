@@ -76,7 +76,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
     @action(
-        methods=['POST', 'DELETE'],
+        methods=('POST', 'DELETE',),
         detail=True,
         permission_classes=(IsAuthenticated,),
     )
@@ -112,7 +112,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         )
 
     @action(
-        methods=['POST', 'DELETE'],
+        methods=('POST', 'DELETE',),
         detail=True,
     )
     def shopping_cart(self, request, pk):
@@ -147,7 +147,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         )
 
     @action(
-        methods=['GET'],
+        methods=('GET',),
         detail=False,
         permission_classes=(IsAuthenticated,),
     )

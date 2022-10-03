@@ -93,7 +93,7 @@ class Recipe(models.Model):
         validators=(
             MinValueValidator(
                 MINCOOKINGTIME,
-                message='Минимальное время приготовления 1 минута'
+                message=f'Минимальное время {MINCOOKINGTIME} минута'
             ),
         ),
         verbose_name='Время приготовления',
@@ -132,7 +132,8 @@ class AmountIngredientsInRecipe(models.Model):
     amount = models.PositiveSmallIntegerField(
         validators=(
             MinValueValidator(
-                MINAMOUNT, message='Минимум 1 единица ингредиента'
+                MINAMOUNT,
+                message=f'Минимум {MINAMOUNT} единица ингредиента'
             ),
         ),
         verbose_name='Количество ингредиента',
@@ -140,12 +141,12 @@ class AmountIngredientsInRecipe(models.Model):
     )
 
     class Meta:
-        constraints = [
+        constraints = (
             models.UniqueConstraint(
                 fields=('recipe', 'ingredient'),
                 name='unique_ingredient',
-            )
-        ]
+            ),
+        )
         verbose_name = 'Количество ингредиента'
         verbose_name_plural = 'Количество ингредиентов'
 
@@ -170,12 +171,12 @@ class FavoritedRecipe(models.Model):
     )
 
     class Meta:
-        constraints = [
+        constraints = (
             models.UniqueConstraint(
                 fields=('user', 'recipe'),
                 name='unique_favorited',
-            )
-        ]
+            ),
+        )
         verbose_name = 'Избранный рецепт'
         verbose_name_plural = 'Избранные рецепты'
 
@@ -199,12 +200,12 @@ class ShoppingCart(models.Model):
     )
 
     class Meta:
-        constraints = [
+        constraints = (
             models.UniqueConstraint(
                 fields=('user', 'recipe'),
                 name='unique_recipe_in_shopping_cart',
-            )
-        ]
+            ),
+        )
         verbose_name = 'Список покупок'
         verbose_name_plural = 'Списки покупок'
 
