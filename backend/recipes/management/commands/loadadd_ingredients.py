@@ -1,4 +1,4 @@
-from csv import DictReader
+import csv
 
 from django.conf import settings
 from django.core.management import BaseCommand
@@ -14,7 +14,7 @@ class Command(BaseCommand):
             'r',
             encoding='utf-8',
         ) as file:
-            reader = DictReader(file)
+            reader = csv.reader(file)
             for value in reader:
                 name, measurement_unit = value
                 Ingredient.objects.get_or_create(
