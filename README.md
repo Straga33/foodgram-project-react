@@ -25,35 +25,63 @@
 ### Шаблон наполнения env-файла:
 
 DB_ENGINE=django.db.backends.postgresql # указываем, что работаем с postgresql
-
-DB_NAME=имя базы данных
-
-POSTGRES_USER=логин для подключения к базе данных
-
-POSTGRES_PASSWORD=пароль для подключения к БД
-
+DB_NAME=<имя базы данных>
+POSTGRES_USER=<логин для подключения к базе данных>
+POSTGRES_PASSWORD=<пароль для подключения к БД>
 DB_HOST=db # название сервиса (контейнера)
-
 DB_PORT=5432 # порт для подключения к БД
+ENV_DEBUG=False # Включить / отключить DEBUG
+ENV_SECRET_KEY=<секретный ключ>
 
-### Как запустить проект:
+### Как запустить проект локальном сервере:
 
-Зайти на ВМ и установить docker, docker-compose
-
-Создайте папку infra:
-
-```
-mkdir infra
-```
-Перенести файлы docker-compose.yml и default.conf на сервер.
+Скопировать репозиторий:
 
 ```
-scp docker-compose.yml username@server_ip:/home/<username>/infra
+git@github.com:Straga33/foodgram-project-react.git
+```
+Активировать виртуальное окружение, обновить pip и установить зависимости:
+```
+python -m venv venv
+source venv/Scripts/activate
+python -m pip install --upgrade pip
+pip install -r backend/requirements.txt
+```
+Выполнить миграции:
+```
+cd backend
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
+```
+Запустить сервер backend:
+```
+python manage.py runserver
+```
+Перейти в папку с frontend:
+```
+cd frontend
+```
+Выполнить зподготовку и запуск сервера frontend:
+```
+npm i --force
+npm run build
+npm run start
+```
+### Запуск проекта на удаленном сервере:
+
+Зайти на удаленный сервер и установить docker, docker-compose:
+
+Перенести файлы docker-compose.yml и default.conf на сервер:
+```
+scp docker-compose.yml username@server_ip:/home/<username>/
 ```
 ```
-scp default.conf <username>@<server_ip>:/home/<username>/infra
+scp default.conf <username>@<server_ip>:/home/<username>/
 ```
-Создайте файл .env в дериктории infra по шаблону.
+Создайть файл .env по шаблону.
+
+Выполнить deploy на удаленный сервер.
 
 Выполнить миграции:
 ```
