@@ -15,9 +15,12 @@ class Command(BaseCommand):
             encoding='utf-8',
         ) as file:
             reader = DictReader(file)
-            Ingredient.objects.bulk_create(
-                Ingredient(**data) for data in reader
-            )
+            for value in reader:
+                name, measurement_unit = value
+                Ingredient.objects.get_or_create(
+                    name=name,
+                    measurement_unit=measurement_unit
+                )
         self.stdout.write(
-            self.style.SUCCESS("***Ингредиенты добавлены***")
+            self.style.SUCCESS('Ингредиенты добавлены')
         )

@@ -7,6 +7,7 @@ from recipes.models import (AmountIngredientsInRecipe, FavoritedRecipe,
 class IngredientAdmin(admin.ModelAdmin):
     """Админка для ингредиентов."""
     list_display = (
+        'id',
         'name',
         'measurement_unit',
     )
