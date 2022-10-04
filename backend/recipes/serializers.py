@@ -120,7 +120,7 @@ class RecipesCreateSerializer(serializers.ModelSerializer):
             if current_ingredient['amount'] < MINAMOUNT:
                 raise serializers.ValidationError({
                     'amount': f'Минимум {MINAMOUNT} единиц(а) ингредиента.'
-            })
+                })
             unique_set.add(current_ingredient)
         return data
 
