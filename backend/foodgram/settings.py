@@ -1,4 +1,5 @@
 import os
+from pickle import FALSE
 
 from dotenv import load_dotenv
 
@@ -22,7 +23,7 @@ CONTENTTYPE = 'text/plain; charset=utf8'
 SECRET_KEY = os.getenv('ENV_SECRET_KEY', default='*27he3pvceh2&xtloux#p+_xx#!9qfe1tz(dqgyz4q@jo%nvuc')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG =  os.getenv('ENV_DEBUG', default=False)
 
 ALLOWED_HOSTS = ['*']
 
