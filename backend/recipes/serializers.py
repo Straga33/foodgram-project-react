@@ -113,11 +113,12 @@ class RecipesCreateSerializer(serializers.ModelSerializer):
         unique_set = set()
         for ingredient_data in ingredients:
             current_ingredient = ingredient_data['id']
+            current_amount = ingredient_data['amount']
             if current_ingredient in unique_set:
                 raise serializers.ValidationError(
                     'Уберите повторяющиеся ингредиенты из состава.'
                 )
-            if current_ingredient['amount'] < MINAMOUNT:
+            if current_amount < MINAMOUNT:
                 raise serializers.ValidationError({
                     'amount': f'Минимум {MINAMOUNT} единиц(а) ингредиента.'
                 })

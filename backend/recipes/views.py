@@ -170,7 +170,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             shopping_list += (
                 f'{ingredient["ingredient__name"]} - '
                 f'{ingredient["ingredient_total"]} '
-                f'({ingredient["ingredient__measurement_unit"]}) \n'
+                f'({ingredient["ingredient__measurement_unit"]})\n'
             )
             response = HttpResponse(
                 shopping_list, content_type=CONTENTTYPE
