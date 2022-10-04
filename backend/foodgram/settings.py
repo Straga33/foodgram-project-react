@@ -19,10 +19,10 @@ CONTENTTYPE = 'text/plain; charset=utf8'
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('ENV_SECRET_KEY', default='*27he3pvceh2&xtloux#p+_xx#!9qfe1tz(dqgyz4q@jo%nvuc')
+SECRET_KEY = os.getenv('ENV_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('ENV_DEBUG', default=False)
+DEBUG = os.getenv('ENV_DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
