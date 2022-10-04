@@ -105,15 +105,15 @@ class RecipesCreateSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         cooking_time = int(self.initial_data['cooking_time'])
-        amount = data['ingredients'][0]['amount']
+        #amount = data['ingredients'][0]['amount']
         if cooking_time < MINCOOKINGTIME:
             raise serializers.ValidationError({
                 'cooking_time': f'Минимум {MINCOOKINGTIME} минут(а).'
             })
-        if amount < MINAMOUNT:
-            raise serializers.ValidationError({
-                'amount': f'Минимум {MINAMOUNT} единиц(а) ингредиента.'
-            })
+        # if amount < MINAMOUNT:
+        #     raise serializers.ValidationError({
+        #         'amount': f'Минимум {MINAMOUNT} единиц(а) ингредиента.'
+        #     })
         ingredients = data['ingredients']
         unique_set = set()
         for ingredient_data in ingredients:
@@ -122,6 +122,10 @@ class RecipesCreateSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError(
                     'Уберите повторяющиеся ингредиенты из состава.'
                 )
+            if current_ingredient['amount'] < MINAMOUNT:
+                raise serializers.ValidationError({
+                    'amount': f'Минимум {MINAMOUNT} единиц(а) ингредиента.'
+            })
             unique_set.add(current_ingredient)
         return data
 
