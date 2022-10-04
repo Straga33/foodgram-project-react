@@ -19,5 +19,5 @@ class Command(BaseCommand):
                 Ingredient(**data) for data in reader
             )
         self.stdout.write(
-            self.style.SUCCESS("***Ingredients were succesfully loaded***")
+            self.style.SUCCESS("***Ингредиенты добавлены***")
         )
