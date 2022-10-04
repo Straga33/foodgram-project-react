@@ -22,7 +22,7 @@ CONTENTTYPE = 'text/plain; charset=utf8'
 SECRET_KEY = os.getenv('ENV_SECRET_KEY', default='*27he3pvceh2&xtloux#p+_xx#!9qfe1tz(dqgyz4q@jo%nvuc')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('ENV_DEBUG', default=False)
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
