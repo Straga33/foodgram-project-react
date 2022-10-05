@@ -21,7 +21,7 @@ CONTENTTYPE = 'text/plain; charset=utf8'
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('ENV_SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY WARNING: don't run with debug turned on in production
 # DEBUG = os.getenv('ENV_DEBUG')
 DEBUG = False
 
