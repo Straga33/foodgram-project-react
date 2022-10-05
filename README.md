@@ -72,6 +72,10 @@ npm run start
 
 Зайти на удаленный сервер и установить docker, docker-compose:
 
+Создайте папку infra:
+```
+mkdir infra
+```
 Перенести файлы docker-compose.yml и default.conf на сервер:
 ```
 scp docker-compose.yml username@server_ip:/home/<username>/
@@ -97,6 +101,14 @@ sudo docker-compose exec backend python manage.py collectstatic --no-input
 Создать суперпользователя:
 ```
 docker-compose exec web python manage.py createsuperuser
+```
+Заполните базу данных ингредиентами и тэгами:
+
+```
+sudo docker-compose exec backend python manage.py loadadd_tags
+```
+```
+sudo docker-compose exec backend python manage.py loadadd_ingredients
 ```
 
 ### Разработчик:
