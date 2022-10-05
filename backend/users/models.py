@@ -1,12 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
-from rest_framework.authtoken import models
-
-
-class Token(models.Token):
-    class Meta:
-        verbose_name='Токен'
 
 
 class User(AbstractUser):
