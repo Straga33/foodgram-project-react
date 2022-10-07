@@ -10,7 +10,8 @@ class IngredientAdmin(admin.ModelAdmin):
         'name',
         'measurement_unit',
     )
-    list_filter = ("name",)
+    search_fields = ('^name',)
+    list_filter = ('measurement_unit',)
 
 
 class TagAdmin(admin.ModelAdmin):
@@ -24,8 +25,16 @@ class TagAdmin(admin.ModelAdmin):
     list_filter = ('name',)
 
 
+class IngredientInline(admin.TabularInline):
+    model = AmountIngredientsInRecipe
+    extra = 1
+
+
 class RecipeAdmin(admin.ModelAdmin):
     """Админка для рецептов."""
+    inlines = (
+        IngredientInline,
+    )
     list_display = (
         'id',
         'name',
@@ -33,9 +42,12 @@ class RecipeAdmin(admin.ModelAdmin):
         'amount_in_favorites',
     )
     list_filter = (
-        'name',
-        'author',
         'tags',
+    )
+    search_fields = (
+        '^name',
+        '^author__username',
+        '^author__email',
     )
 
     def amount_in_favorites(self, obj):
@@ -50,6 +62,11 @@ class AmountIngredientsInRecipeAdmin(admin.ModelAdmin):
         'recipe',
         'amount',
     )
+    search_fields = (
+        '^ingredient__name',
+        '^recipe__name',
+    )
+    list_filter = ('recipe__tags',)
 
 
 class FavoritedRecipeAdmin(admin.ModelAdmin):
@@ -58,7 +75,12 @@ class FavoritedRecipeAdmin(admin.ModelAdmin):
         'user',
         'recipe',
     )
-    list_filter = ('user',)
+    search_fields = (
+        '^recipe__name',
+        '^user__username',
+        '^user__email',
+    )
+    list_filter = ('recipe__tags',)
 
 
 class ShoppingCartAdmin(admin.ModelAdmin):
@@ -67,7 +89,12 @@ class ShoppingCartAdmin(admin.ModelAdmin):
         'user',
         'recipe',
     )
-    list_filter = ('user',)
+    search_fields = (
+        '^recipe__name',
+        '^user__username',
+        '^user__email',
+    )
+    list_filter = ('recipe__tags',)
 
 
 admin.site.register(Ingredient, IngredientAdmin)

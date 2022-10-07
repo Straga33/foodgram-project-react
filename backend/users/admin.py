@@ -11,15 +11,23 @@ class UserAdmin(admin.ModelAdmin):
         'email',
         'first_name',
         'last_name',
+        'is_superuser',
+        'is_staff',
     )
-    search_fields = ('username', 'email',)
-    list_filter = ('username', 'email',)
+    search_fields = (
+        '^username',
+        '^email',
+    )
+    list_filter = ('is_superuser', 'is_staff',)
 
 
 class FollowAdmin(admin.ModelAdmin):
     """Админка для подписок."""
     list_display = ('user', 'author',)
-    search_fields = ('user', 'author',)
+    search_fields = (
+        '^user__username',
+        '^author__username',
+    )
     list_filter = ('author',)
 
 
